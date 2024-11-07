@@ -17,3 +17,12 @@ output "private_subnet_ids" {
   ]
 }
 
+output "public_route_table_id" {
+  value = aws_route_table.public_rtb.id
+}
+
+output "private_route_table_id" {
+  value = aws_route_table.private_rtb.id
+}
+
+
