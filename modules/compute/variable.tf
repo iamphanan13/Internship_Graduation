@@ -22,3 +22,7 @@ variable "key_name" {
 variable "ec2_security_group_id" {
   type = list(string)
 }
+
+variable "iam_instance_profile" {
+  type = string
+}

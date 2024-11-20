@@ -27,3 +27,6 @@ variable "availability_zones_1" {
 variable "availability_zones_2" {
   type = string
 }
+
+variable "security_group" {
+}

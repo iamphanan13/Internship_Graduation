@@ -24,3 +24,24 @@ variable "private_subnet_block" {
   type = list(string)
 
 }
+
+variable "prefix" {
+  type     = string
+  nullable = false
+}
+
+variable "instance_type" {
+  type     = string
+  nullable = false
+}
+
+# variable "image_id" {
+#   type     = string
+#   # default  = data.aws_ami.ubuntu.id
+
+# }
+
+variable "kp_path" {
+  type    = string
+  default = "./keypair/keypair.pem"
+}

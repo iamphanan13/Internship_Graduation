@@ -118,3 +118,16 @@ resource "aws_route_table_association" "private_rta_02" {
   route_table_id = aws_route_table.private_rtb.id
 
 }
+
+
+resource "aws_vpc_endpoint" "ec2_endpoint" {
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.${var.region}.ssm"
+  vpc_endpoint_type = "Interface"
+  subnet_ids        = [aws_subnet.public_subnet_01.id, aws_subnet.public_subnet_02.id]
+
+  security_group_ids = var.security_group
+  tags = {
+    Name = "Test VPC Endpoint"
+  }
+}
