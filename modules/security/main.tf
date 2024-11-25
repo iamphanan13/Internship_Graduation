@@ -19,6 +19,14 @@ resource "aws_security_group" "public_sg" {
 
   }
 
+  ingress {
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow ping from anywhere"
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -63,6 +71,13 @@ resource "aws_security_group" "presentation_tier_instance" {
     security_groups = [aws_security_group.presentation_tier_alb.id]
     description     = "Allow HTTP from ALB"
   }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow HTTPS from anywhere"
+  }
   egress {
     from_port   = 0
     to_port     = 0
@@ -105,6 +120,20 @@ resource "aws_security_group" "application_tier_instance" {
     protocol        = "tcp"
     security_groups = [aws_security_group.application_tier_alb.id]
     description     = "Allow TCP from ALB"
+  }
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.public_sg.id]
+    description     = "Allow HTTPS from Presentation Tier Instance"
+  }
+  ingress {
+    description     = "Allow ICMP (ping) from public EC2"
+    from_port       = -1                                # ICMP does not use port numbers, so set to -1
+    to_port         = -1                                # -1 to allow all ICMP types and codes
+    protocol        = "icmp"                            # Specify ICMP traffic
+    security_groups = [aws_security_group.public_sg.id] # Reference the public EC2 SG
   }
   egress {
     from_port   = 0

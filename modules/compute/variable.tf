@@ -11,13 +11,17 @@ variable "instance_type" {
   type = string
 }
 
-variable "subnet_id" {
+variable "public_subnet_id" {
   type = string
 }
 
-variable "key_name" {
+variable "private_subnet_id" {
   type = string
 }
+
+# variable "key_name" {
+#   type = string
+# }
 
 variable "ec2_security_group_id" {
   type = list(string)
