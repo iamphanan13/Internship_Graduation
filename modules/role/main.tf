@@ -14,6 +14,10 @@ resource "aws_iam_role" "ssm_ec2_role" {
       }
     ]
   })
+
+  tags = {
+    Name = "ssm-ec2-role"
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "ssm_ec2_role_policy" {

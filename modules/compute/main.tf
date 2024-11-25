@@ -9,7 +9,20 @@ resource "aws_instance" "bastion_host" {
   iam_instance_profile   = var.iam_instance_profile
 
   tags = {
-    Name = "${var.prefix}-instance"
+    Name = "${var.prefix}-bastion-host"
+  }
+}
+
+resource "aws_instance" "private_instance" {
+  vpc_security_group_ids      = var.ec2_private_security_group_id
+  ami                         = var.image_id
+  subnet_id                   = var.subnet_id
+  instance_type               = var.instance_type
+  associate_public_ip_address = false
+  iam_instance_profile = var.iam_instance_profile
+
+  tags = {
+    Name = "${var.prefix}-private-instance"
   }
 }
 

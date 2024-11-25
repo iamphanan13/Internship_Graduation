@@ -2,7 +2,7 @@ resource "aws_vpc" "main" {
   cidr_block           = var.cidr_block
   enable_dns_hostnames = true
   tags = {
-    Name = "Internship Graduation VPC"
+    Name = "${var.prefix}-vpc"
   }
 }
 
@@ -10,7 +10,7 @@ resource "aws_vpc" "main" {
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
   tags = {
-    Name = "Internship Graduation IGW"
+    Name = "${var.prefix}-igw"
   }
 }
 
@@ -21,7 +21,7 @@ resource "aws_subnet" "public_subnet_01" {
   cidr_block        = var.public_subnet_block[0]
   availability_zone = var.availability_zones_1
   tags = {
-    Name = "Internship Graduation Public Subnet 01"
+    Name = "${var.prefix}-public-subnet-01"
   }
 }
 
@@ -32,7 +32,7 @@ resource "aws_subnet" "public_subnet_02" {
   cidr_block        = var.public_subnet_block[1]
   availability_zone = var.availability_zones_2
   tags = {
-    Name = "Internship Graduation Public Subnet 02"
+    Name = "${var.prefix}-public-subnet-02"
   }
 }
 
@@ -44,7 +44,7 @@ resource "aws_subnet" "private_subnet_01" {
   cidr_block        = var.private_subnet_block[0]
   availability_zone = var.availability_zones_1
   tags = {
-    Name = "Internship Graduation Private Subnet 01"
+    Name = "${var.prefix}-private-subnet-01"
   }
 }
 
@@ -54,14 +54,16 @@ resource "aws_subnet" "private_subnet_02" {
   cidr_block        = var.private_subnet_block[1]
   availability_zone = var.availability_zones_2
   tags = {
-    Name = "Internship Graduation Private Subnet 02"
+    Name = "${var.prefix}-private-subnet-02"
   }
 }
 
 # Create Elastic IP 
 
 resource "aws_eip" "eip" {
-
+  tags = {
+    Name = "${var.prefix}-nat-ip"
+  }
 }
 
 resource "aws_nat_gateway" "nat_gw" {
@@ -79,7 +81,7 @@ resource "aws_route_table" "public_rtb" {
     gateway_id = aws_internet_gateway.igw.id
   }
   tags = {
-    Name = "Internship Graduation Public Route Table"
+    Name = "${var.prefix}-public-route-table"
   }
 }
 
@@ -92,7 +94,7 @@ resource "aws_route_table" "private_rtb" {
     nat_gateway_id = aws_nat_gateway.nat_gw.id
   }
   tags = {
-    Name = "Internship Graduation Private Route Table"
+    Name = "${var.prefix}-private-route-table"
   }
 }
 # Associate Public Subnet with Public Route Table
@@ -128,6 +130,6 @@ resource "aws_vpc_endpoint" "ec2_endpoint" {
 
   security_group_ids = var.security_group
   tags = {
-    Name = "Test VPC Endpoint"
+    Name = "${var.prefix}-ec2-endpoint"
   }
 }

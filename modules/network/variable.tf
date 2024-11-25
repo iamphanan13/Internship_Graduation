@@ -30,3 +30,7 @@ variable "availability_zones_2" {
 
 variable "security_group" {
 }
+
+variable "prefix" {
+
+}
