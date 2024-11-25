@@ -1,7 +1,5 @@
 name: Destroy Infrastucture
 on:
-    push:
-        branches: [ "dev" ]
     workflow_dispatch:
 
 permissions:
