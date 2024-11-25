@@ -3,6 +3,9 @@ name: 'Create or Update Infrastructure'
 on:
   push:
     branches: [ "dev" ]
+    paths-ignore:
+      - '**.md'
+      - '.github/**'
   pull_request:
 
 permissions:
