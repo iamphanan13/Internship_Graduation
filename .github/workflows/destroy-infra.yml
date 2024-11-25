@@ -1,9 +1,10 @@
 name: Destroy Infrastucture
 on:
-  pull_request:
-    types:
-      - opened
+  push:
+    branches:
+      - dev
   workflow_dispatch:
+
 
 permissions:
   id-token: write
