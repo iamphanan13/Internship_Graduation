@@ -1,6 +1,7 @@
 name: Destroy Infrastucture
 on:
   workflow_dispatch: {}
+  pull_request:
 
 
 permissions:
