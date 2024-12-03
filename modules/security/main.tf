@@ -122,11 +122,28 @@ resource "aws_security_group" "application_tier_instance" {
     description     = "Allow TCP from ALB"
   }
   ingress {
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
-    security_groups = [aws_security_group.public_sg.id]
-    description     = "Allow HTTPS from Presentation Tier Instance"
+    from_port   = 5000
+    to_port     = 5000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    # security_groups = [aws_security_group.public_sg.id]
+    description = "Allow 5000 from Public SG"
+  }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    # security_groups = [aws_security_group.public_sg.id]
+    description = "Allow HTTPS from Presentation Tier Instance"
+  }
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    # security_groups = [aws_security_group.public_sg.id]
+    description = "Allow HTTP from Presentation Tier Instance"
   }
   ingress {
     description     = "Allow ICMP (ping) from public EC2"
@@ -136,10 +153,18 @@ resource "aws_security_group" "application_tier_instance" {
     security_groups = [aws_security_group.public_sg.id] # Reference the public EC2 SG
   }
   egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+  }
+
+  egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all traffic to the internet if i enable NAT"
   }
   tags = {
     "Name" = "${var.prefix}-application-tier-instance-sg"
@@ -150,18 +175,11 @@ resource "aws_security_group" "data_tier" {
   name   = "${var.prefix}-data-tier"
   vpc_id = var.vpc_id
   ingress {
-    from_port       = 3306
-    to_port         = 3306
-    protocol        = "tcp"
-    security_groups = [aws_security_group.application_tier_instance.id]
-    description     = "Allow MySQL from Application Tier Instance"
-  }
-  ingress {
-    from_port       = 3306
-    to_port         = 3306
-    protocol        = "tcp"
-    security_groups = [aws_security_group.public_sg.id]
-    description     = "Allow MySQL from Public SG"
+    from_port = 3306
+    to_port   = 3306
+    protocol  = "tcp"
+    # cidr_blocks = [var.vpc_cidr]
+    security_groups = [aws_security_group.test_private_sg.id]
   }
   egress {
     from_port   = 0
@@ -173,12 +191,6 @@ resource "aws_security_group" "data_tier" {
     "Name" = "${var.prefix}-data-tier-sg"
   }
 }
-
-
-
-
-
-
 
 # resource "aws_security_group" "private_sg" {
 #   name   = "${var.prefix}-private-sg"
@@ -208,7 +220,7 @@ resource "aws_security_group" "vpc_endpoint_sg" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.vpc_cidr]
   }
 
   egress {
@@ -220,5 +232,110 @@ resource "aws_security_group" "vpc_endpoint_sg" {
 
   tags = {
     Name = "${var.prefix}-vpc-endpoint-sg"
+  }
+}
+
+resource "aws_security_group" "test_public_sg" {
+  vpc_id = var.vpc_id
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "${var.prefix}-test-public-sg"
+  }
+}
+
+resource "aws_security_group" "test_public_ecs_sg" {
+  vpc_id = var.vpc_id
+  ingress {
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.test_public_sg.id]
+  }
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.test_public_sg.id]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+    tags = {
+    Name = "${var.prefix}-test-public-ecs-sg"
+  }
+}
+resource "aws_security_group" "test_private_sg" {
+  vpc_id = var.vpc_id
+  ingress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    security_groups = [aws_security_group.test_public_sg.id]
+  }
+  # ingress {
+  #   from_port       = 5000
+  #   to_port         = 5000
+  #   protocol        = "tcp"
+  #   security_groups = [aws_security_group.test_public_sg.id]
+  # }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "${var.prefix}-test-private-sg"
+  }
+}
+
+resource "aws_security_group" "test_db_sg" {
+  vpc_id = var.vpc_id
+  ingress {
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = [aws_security_group.test_private_sg.id]
+  }
+  ingress {
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = [aws_security_group.test_public_sg.id]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "${var.prefix}-test-db-sg"
   }
 }

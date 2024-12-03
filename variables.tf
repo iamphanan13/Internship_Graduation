@@ -25,6 +25,11 @@ variable "private_subnet_block" {
 
 }
 
+variable "data_subnet_block" {
+  type = list(string)
+
+}
+
 variable "prefix" {
   type     = string
   nullable = false

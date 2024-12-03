@@ -18,3 +18,8 @@ variable "vpc_cidr" {
 # variable "application_tier_alb_sg" {
 
 # }
+
+variable "private_cidr_block" {
+  type = list(string)
+
+}

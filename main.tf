@@ -13,35 +13,62 @@ module "network" {
   availability_zones_2 = var.availability_zones_2
   public_subnet_block  = var.public_subnet_block
   private_subnet_block = var.private_subnet_block
+  data_subnet_block    = var.data_subnet_block
   security_group       = [module.security.vpc_endpoint_sg_id]
 
 }
 
+module "database" {
+  source             = "./modules/database"
+  subnet_group_name  = module.network.db_subnet_group_name
+  security_group_ids = [module.security.test_db_sg]
+  prefix             = var.prefix
+}
+
 
 module "security" {
-  source   = "./modules/security"
-  region   = var.region
-  vpc_cidr = var.cidr_block
-  vpc_id   = module.network.vpc_id
-  prefix   = var.prefix
+  source             = "./modules/security"
+  region             = var.region
+  vpc_cidr           = var.cidr_block
+  vpc_id             = module.network.vpc_id
+  prefix             = var.prefix
+  private_cidr_block = [module.network.private_cidr_block[0], module.network.private_cidr_block[1]]
 }
 
 module "compute" {
   source            = "./modules/compute"
+  vpc_id            = module.network.vpc_id
   prefix            = var.prefix
   public_subnet_id  = module.network.public_subnet_ids[0]
   private_subnet_id = module.network.private_subnet_ids[0]
   image_id          = data.aws_ami.ubuntu.id
   # key_name                      = "ec2-lab01"
   instance_type                 = var.instance_type
-  ec2_security_group_id         = [module.security.public_sg_id]
+  ec2_security_group_id         = [module.security.test_sg_id]
   ec2_private_security_group_id = [module.security.application_tier_instance_sg]
 
   iam_instance_profile = module.role.instance_profile_name
 }
 
 
-module "ecr" {
-  source = "./modules/ecr"
-  repository_name = "internship-graduation-ecr"
+# module "ecr" {
+#   source          = "./modules/ecr"
+#   repository_name = "internship-graduation-ecr"
+# }
+
+module "namespace" {
+  source = "./modules/namespace"
+  vpc_id = module.network.vpc_id
+
+}
+
+module "cluster" {
+  source             = "./modules/cluster"
+  execution_role_arn = module.role.execution_role_arn
+  db_host            = module.database.db_endpoint
+  prefix         = var.prefix
+  vpc_id         = module.network.vpc_id
+  subnets        = module.network.public_subnet_ids
+  security_group = [module.security.test_sg_id]
+  cloudmap_arn   = module.namespace.cloudmap_arn
 }

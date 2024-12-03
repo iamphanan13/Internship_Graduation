@@ -14,3 +14,12 @@ output "application_tier_alb_sg" {
 output "application_tier_instance_sg" {
   value = aws_security_group.application_tier_instance.id
 }
+
+output "test_db_sg" {
+  value = aws_security_group.test_db_sg.id
+}
+
+output "test_sg_id" {
+  value = aws_security_group.test_public_sg.id
+
+}

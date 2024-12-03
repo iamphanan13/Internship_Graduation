@@ -19,6 +19,12 @@ variable "private_subnet_block" {
 
 }
 
+variable "data_subnet_block" {
+  type     = list(string)
+  nullable = false
+
+}
+
 variable "availability_zones_1" {
   type = string
 }

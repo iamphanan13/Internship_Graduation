@@ -34,3 +34,8 @@ variable "ec2_private_security_group_id" {
 variable "iam_instance_profile" {
   type = string
 }
+
+variable "vpc_id" {
+  type = string
+
+}
