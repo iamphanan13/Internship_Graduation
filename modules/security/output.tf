@@ -19,7 +19,15 @@ output "test_db_sg" {
   value = aws_security_group.test_db_sg.id
 }
 
+output "test_private_sg" {
+  value = aws_security_group.test_private_sg.id
+}
+
 output "test_sg_id" {
   value = aws_security_group.test_public_sg.id
 
+}
+
+output "test_sg_ecs_id" {
+  value = aws_security_group.test_public_ecs_sg.id
 }

@@ -45,7 +45,7 @@ module "compute" {
   # key_name                      = "ec2-lab01"
   instance_type                 = var.instance_type
   ec2_security_group_id         = [module.security.test_sg_id]
-  ec2_private_security_group_id = [module.security.application_tier_instance_sg]
+  ec2_private_security_group_id = [module.security.test_private_sg]
 
   iam_instance_profile = module.role.instance_profile_name
 }
@@ -65,10 +65,15 @@ module "namespace" {
 module "cluster" {
   source             = "./modules/cluster"
   execution_role_arn = module.role.execution_role_arn
-  db_host            = module.database.db_endpoint
-  prefix         = var.prefix
-  vpc_id         = module.network.vpc_id
-  subnets        = module.network.public_subnet_ids
-  security_group = [module.security.test_sg_id]
-  cloudmap_arn   = module.namespace.cloudmap_arn
+  task_role_arn      = module.role.task_role_arn
+  db_host            = module.database.db_endpoint_address
+  prefix             = var.prefix
+  vpc_id             = module.network.vpc_id
+  subnets            = module.network.public_subnet_ids
+  security_group     = [module.security.test_sg_id]
+  cloudmap_arn       = module.namespace.cloudmap_arn
+  be_security_group  = [module.security.test_private_sg]
+  be_subnets         = module.network.private_subnet_ids
+  fe_security_group  = [module.security.test_sg_ecs_id]
+  fe_subnets         = module.network.public_subnet_ids
 }

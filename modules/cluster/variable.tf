@@ -6,11 +6,6 @@ variable "db_host" {
   type = string
 
 }
-
-# variable "cloudmap_namespace" {
-#   type = string
-# }
-
 variable "prefix" {
   type = string
 }
@@ -28,7 +23,27 @@ variable "security_group" {
   type = list(string)
 }
 
+variable "task_role_arn" {
+  type = string
+}
+
 variable "cloudmap_arn" {
   type = string
 
+}
+
+variable "be_security_group" {
+  type = list(string)
+}
+
+variable "be_subnets" {
+  type = list(string)
+}
+
+variable "fe_security_group" {
+  type = list(string)
+}
+
+variable "fe_subnets" {
+  type = list(string)
 }

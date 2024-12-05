@@ -192,10 +192,10 @@ resource "aws_vpc_endpoint" "ssm_endpoint" {
 }
 
 resource "aws_vpc_endpoint" "ecr_s3_endpoint" {
-  vpc_id = aws_vpc.main.id
-  service_name = "com.amazonaws.${var.region}.s3"
+  vpc_id            = aws_vpc.main.id
+  service_name      = "com.amazonaws.${var.region}.s3"
   vpc_endpoint_type = "Gateway"
-  route_table_ids = [aws_route_table.private_rtb.id]
+  route_table_ids   = [aws_route_table.private_rtb.id]
 
 
   tags = {
@@ -205,7 +205,7 @@ resource "aws_vpc_endpoint" "ecr_s3_endpoint" {
 
 
 # resource "aws_vpc_endpoint" "name" {
-  
+
 # }
 
 # resource "aws_vpc_endpoint" "ssm_endpoint" {
