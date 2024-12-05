@@ -225,6 +225,18 @@ resource "aws_security_group" "test_public_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  # ingress {
+  #   from_port = 8080
+  #   to_port   = 8080
+  #   protocol  = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
+  #   ingress {
+  #   from_port = 5000
+  #   to_port   = 5000
+  #   protocol  = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
   ingress {
     from_port   = 3000
     to_port     = 3000
@@ -272,7 +284,7 @@ resource "aws_security_group" "test_private_sg" {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    security_groups = [aws_security_group.test_public_ecs_sg.id]
+    security_groups = [aws_security_group.test_public_ecs_sg.id, aws_security_group.test_public_sg.id]
   }
   egress {
     from_port   = 0
@@ -291,7 +303,7 @@ resource "aws_security_group" "test_db_sg" {
     from_port       = 3306
     to_port         = 3306
     protocol        = "tcp"
-    security_groups = [aws_security_group.test_private_sg.id, aws_security_group.test_public_ecs_sg.id]
+    security_groups = [aws_security_group.test_private_sg.id, aws_security_group.test_public_sg.id]
   }
   egress {
     from_port   = 0

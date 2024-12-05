@@ -159,15 +159,15 @@ resource "aws_route_table_association" "private_rta_02" {
 
 locals {
   services = {
-    "ec2messages" : {
-      "name" : "com.amazonaws.${var.region}.ec2messages"
-    },
-    "ssm" : {
-      "name" : "com.amazonaws.${var.region}.ssm"
-    },
-    "ssmmessages" : {
-      "name" : "com.amazonaws.${var.region}.ssmmessages"
-    }
+    # "ec2messages" : {
+    #   "name" : "com.amazonaws.${var.region}.ec2messages"
+    # },
+    # "ssm" : {
+    #   "name" : "com.amazonaws.${var.region}.ssm"
+    # },
+    # "ssmmessages" : {
+    #   "name" : "com.amazonaws.${var.region}.ssmmessages"
+    # }
     "ecr_dkr" : {
       "name" : "com.amazonaws.${var.region}.ecr.dkr"
     }

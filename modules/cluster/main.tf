@@ -54,7 +54,7 @@ resource "aws_ecs_task_definition" "backend_task_definition" {
         },
         {
           name  = "MYSQL_DATABASE"
-          value = "internship_graduation_db"
+          value = "fcjresbar"
         },
         {
           name  = "DB_HOST"
@@ -210,6 +210,8 @@ resource "aws_lb_listener" "be_lb_listener" {
     target_group_arn = aws_lb_target_group.be_target_group_1.arn
   }
 }
+
+
 
 
 # resource "aws_lb_listener" "alb_listener" {

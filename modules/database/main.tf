@@ -20,12 +20,12 @@ resource "aws_db_instance" "db_instance" {
   identifier                = "internship-graduation-db"
   engine                    = "mysql"
   engine_version            = "8.0.39"
-  db_name                   = "internship_graduation_db"
+  db_name                   = "fcjresbar"
   instance_class            = "db.m6gd.large"
   username                  = "admin"
   password                  = "letmein12345"
   multi_az                  = true
-  publicly_accessible       = true
+  publicly_accessible       = false
   allocated_storage         = 20
   engine_lifecycle_support  = "open-source-rds-extended-support-disabled"
   vpc_security_group_ids    = var.security_group_ids
