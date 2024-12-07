@@ -281,10 +281,11 @@ resource "aws_security_group" "test_public_ecs_sg" {
 resource "aws_security_group" "test_private_sg" {
   vpc_id = var.vpc_id
   ingress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    security_groups = [aws_security_group.test_public_ecs_sg.id, aws_security_group.test_public_sg.id]
+    from_port       = 5000
+    to_port         = 5000
+    protocol        = "tcp"
+    security_groups = [aws_security_group.test_public_ecs_sg.id] 
+    # security_groups = [aws_security_group.test_public_ecs_sg.id, aws_security_group.test_public_sg.id]
   }
   egress {
     from_port   = 0

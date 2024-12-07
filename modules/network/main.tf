@@ -188,7 +188,7 @@ resource "aws_vpc_endpoint" "ssm_endpoint" {
   security_group_ids  = var.security_group
   private_dns_enabled = true
   ip_address_type     = "ipv4"
-  subnet_ids          = [aws_subnet.private_subnet_01.id, aws_subnet.private_subnet_02.id]
+  subnet_ids          = [aws_subnet.private_subnet_01.id]
 }
 
 resource "aws_vpc_endpoint" "ecr_s3_endpoint" {
