@@ -15,9 +15,9 @@ variable "public_subnet_id" {
   type = string
 }
 
-variable "private_subnet_id" {
-  type = string
-}
+# variable "private_subnet_id" {
+#   type = string
+# }
 
 # variable "key_name" {
 #   type = string
@@ -27,9 +27,9 @@ variable "ec2_security_group_id" {
   type = list(string)
 }
 
-variable "ec2_private_security_group_id" {
-  type = list(string)
-}
+# variable "ec2_private_security_group_id" {
+#   type = list(string)
+# }
 
 variable "iam_instance_profile" {
   type = string

@@ -40,12 +40,12 @@ module "compute" {
   vpc_id            = module.network.vpc_id
   prefix            = var.prefix
   public_subnet_id  = module.network.public_subnet_ids[0]
-  private_subnet_id = module.network.private_subnet_ids[0]
+  # private_subnet_id = module.network.private_subnet_ids[0]
   image_id          = data.aws_ami.ubuntu.id
   # key_name                      = "ec2-lab01"
   instance_type                 = var.instance_type
   ec2_security_group_id         = [module.security.test_sg_id]
-  ec2_private_security_group_id = [module.security.test_private_sg]
+  # ec2_private_security_group_id = [module.security.test_private_sg]
 
   iam_instance_profile = module.role.instance_profile_name
 }

@@ -21,7 +21,8 @@ resource "aws_db_instance" "db_instance" {
   engine                    = "mysql"
   engine_version            = "8.0.39"
   db_name                   = "fcjresbar"
-  instance_class            = "db.m6gd.large"
+  instance_class = "db.t3.medium"
+  # instance_class            = "db.m6gd.large"
   username                  = "admin"
   password                  = "letmein12345"
   multi_az                  = true
