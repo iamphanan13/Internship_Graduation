@@ -22,17 +22,17 @@ resource "aws_ecs_task_definition" "backend_task_definition" {
   family                   = "backend_task_definition"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = 8192
-  memory                   = 16384
+  cpu                      = 4096
+  memory                   = 8192
   task_role_arn            = var.task_role_arn
   execution_role_arn       = var.execution_role_arn
   container_definitions = jsonencode([
     {
       name              = "backend"
       image             = "448049825151.dkr.ecr.ap-southeast-1.amazonaws.com/backend-repository-images:latest"
-      cpu               = 2048
-      memory            = 4096
-      memoryReservation = 3072
+      cpu               = 1024
+      memory            = 2048
+      memoryReservation = 2048
       essential         = true
       portMappings = [
         {
@@ -98,8 +98,8 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
   family                   = "frontend_task_definition"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = 8192
-  memory                   = 16384
+  cpu                      = 4096
+  memory                   = 8192
   task_role_arn            = var.task_role_arn
   execution_role_arn       = var.execution_role_arn
   container_definitions = jsonencode([
