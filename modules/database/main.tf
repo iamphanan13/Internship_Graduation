@@ -17,14 +17,14 @@ resource "aws_kms_key" "db_kms_key" {
 
 
 resource "aws_db_instance" "db_instance" {
-  identifier                = "internship-graduation-db"
-  engine                    = "mysql"
-  engine_version            = "8.0.39"
-  db_name                   = "fcjresbar"
+  identifier     = "internship-graduation-db"
+  engine         = "mysql"
+  engine_version = "8.0.39"
+  db_name        = "fcjresbar"
   instance_class = "db.t3.medium"
   # instance_class            = "db.m6gd.large"
-  username                  = "admin"
-  password                  = "letmein12345"
+  username                  = var.db_username // "admin"
+  password                  = var.db_password // "letmein12345"
   multi_az                  = true
   publicly_accessible       = false
   allocated_storage         = 20
