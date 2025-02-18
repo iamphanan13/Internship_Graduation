@@ -51,13 +51,3 @@ variable "kp_path" {
   default = "./keypair/keypair.pem"
 }
 
-variable "db_username" {
-  type      = string
-  sensitive = true
-
-}
-
-variable "db_password" {
-  type      = string
-  sensitive = true
-}
