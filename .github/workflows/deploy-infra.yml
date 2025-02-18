@@ -3,11 +3,15 @@ name: 'Create or Update Infrastructure'
 on:
   push:
     branches:
+      - dev
       - main
     paths-ignore:
       - '**.md'
       - '.github/**'
+      - '**.yml'
   pull_request:
+    branches:
+      - main
 
 permissions:
   id-token: write
@@ -16,7 +20,7 @@ permissions:
 jobs:
   terraform:
     name: 'Terraform'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Update from ubuntu-latest to ubuntu-24.04
     environment: production
 
 

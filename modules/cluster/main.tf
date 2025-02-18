@@ -1,3 +1,12 @@
+data "aws_secretsmanager_secret" "rds" {
+  name = "rds-credentials"
+}
+
+data "aws_secretsmanager_secret_version" "rds" {
+  secret_id = data.aws_secretsmanager_secret.rds.id
+}
+
+
 resource "aws_ecs_cluster" "cluster" {
   name = "internship_graduation_cluster"
 
@@ -46,11 +55,11 @@ resource "aws_ecs_task_definition" "backend_task_definition" {
       environment = [
         {
           name  = "MYSQL_USER"
-          value = "admin"
+          value = jsondecode(data.aws_secretsmanager_secret_version.rds.secret_string)["username"]
         },
         {
           name  = "MYSQL_PASSWORD"
-          value = "letmein12345"
+          value = jsondecode(data.aws_secretsmanager_secret_version.rds.secret_string)["password"]
         },
         {
           name  = "MYSQL_DATABASE"

@@ -1,30 +1,23 @@
-# resource "aws_secretsmanager_secret" "rds_password" {
-#   name = "rds_password"
-#   description = "RDS password for my application"
-# }
+data "aws_secretsmanager_secret" "rds" {
+  name = "rds-credentials"
+}
 
-# resource "aws_secretsmanager_secret_version" "rds_password_version" {
-#   secret_id = aws_secretsmanager_secret.rds_password.id
-#   secret_string = jsonencode({
-#     username = root
-#     password = "123456789"
-#   })
-# }
-
-resource "aws_kms_key" "db_kms_key" {
-  description = "KMS key for encrypting RDS"
+data "aws_secretsmanager_secret_version" "rds" {
+  secret_id = data.aws_secretsmanager_secret.rds.id
 }
 
 
 resource "aws_db_instance" "db_instance" {
-  identifier                = "internship-graduation-db"
-  engine                    = "mysql"
-  engine_version            = "8.0.39"
-  db_name                   = "fcjresbar"
+  identifier     = "internship-graduation-db"
+  engine         = "mysql"
+  engine_version = "8.0.39"
+  db_name        = "fcjresbar"
   instance_class = "db.t3.medium"
-  # instance_class            = "db.m6gd.large"
-  username                  = "admin"
-  password                  = "letmein12345"
+  username       = jsondecode(data.aws_secretsmanager_secret_version.rds.secret_string)["username"]
+  password       = jsondecode(data.aws_secretsmanager_secret_version.rds.secret_string)["password"]
+
+  storage_encrypted = true
+
   multi_az                  = true
   publicly_accessible       = false
   allocated_storage         = 20

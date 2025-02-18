@@ -8,4 +8,5 @@ private_subnet_block = ["10.10.3.0/24", "10.10.4.0/24"]
 data_subnet_block    = ["10.10.5.0/24", "10.10.6.0/24"]
 instance_type        = "t2.micro"
 
+
 prefix = "dev"

@@ -50,3 +50,4 @@ variable "kp_path" {
   type    = string
   default = "./keypair/keypair.pem"
 }
+
