@@ -9,6 +9,9 @@ on:
       - '**.md'
       - '.github/**'
   pull_request:
+    branches:
+      - main
+      - dev
 
 permissions:
   id-token: write
