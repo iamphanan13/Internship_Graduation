@@ -23,8 +23,8 @@ module "database" {
   subnet_group_name  = module.network.db_subnet_group_name
   security_group_ids = [module.security.test_db_sg]
   prefix             = var.prefix
-  db_username        = var.db_username
-  db_password        = var.db_password
+  # db_username        = var.db_username
+  # db_password        = var.db_password
 }
 
 
