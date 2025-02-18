@@ -10,7 +10,7 @@ permissions:
 jobs:
   terraform:
     name: 'Terraform'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
     # Checkout the repository to the GitHub Actions runner
