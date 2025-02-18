@@ -2,3 +2,7 @@
 keypair/
 
 test
+
+*.binary
+*.tfstate
+tfplan.json

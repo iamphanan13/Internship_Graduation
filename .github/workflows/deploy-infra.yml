@@ -3,10 +3,12 @@ name: 'Create or Update Infrastructure'
 on:
   push:
     branches:
+      - dev
       - main
     paths-ignore:
       - '**.md'
       - '.github/**'
+      - '**.yml'
   pull_request:
     branches:
       - main
